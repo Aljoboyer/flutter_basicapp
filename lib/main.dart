@@ -4,61 +4,26 @@ void main() {
   runApp(MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        // primarySwatch: Colors.green,
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(249, 255, 255, 255)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      home: const RegisterView(),
     ));
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
-
-  @override
-  void initState() {
-    email = TextEditingController();
-    password = TextEditingController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    email.dispose();
-    password.dispose();
-    super.dispose();
-  }
-
+class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Register'),
-      ),
-      body: Column(
-        children: [
-          TextField(
-            controller: email,
-            decoration: InputDecoration(
-              hintText: 'Enter your email'
-            ),
-          ),
-          TextField(
-            controller: password,
-            decoration: InputDecoration(
-              hintText: 'Enter your email'
-            ),
-          ),
-          TextButton(onPressed: () {}, child: const Text('Register')),
-        ],
-      ),
+    return Container(
+
     );
   }
 }
