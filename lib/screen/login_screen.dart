@@ -29,7 +29,7 @@ class _LonginViewState extends State<LonginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Register'),
+      appBar: AppBar(title: Text('Login'),
       ),
       body: FutureBuilder(
         future: Future(() => {
@@ -58,7 +58,7 @@ class _LonginViewState extends State<LonginView> {
                   TextButton(onPressed: () {
                     final email = _emailcontroller.text;
                     final password = _passwordcontroller.text;
-                  }, child: const Text('Register')),
+                  }, child: const Text('Login')),
                 ],
            );;
             default:
