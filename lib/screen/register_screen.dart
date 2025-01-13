@@ -1,17 +1,16 @@
-import 'package:basic_phase_app/helper/localstorage_fun.dart';
 import 'package:flutter/material.dart';
 
-class LonginView extends StatefulWidget {
-  const LonginView({super.key});
+
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<LonginView> createState() => _LonginViewState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _LonginViewState extends State<LonginView> {
+class _RegisterViewState extends State<RegisterView> {
   TextEditingController _emailcontroller = TextEditingController();
   TextEditingController _passwordcontroller = TextEditingController();
-  final storage = LocalStorageService();
 
   @override
   void initState() {
@@ -26,16 +25,11 @@ class _LonginViewState extends State<LonginView> {
     _passwordcontroller.dispose();
     super.dispose();
   }
-  
-  void login_handler () async {
-    final email = _emailcontroller.text;
-    await storage.saveData('user_email', email);
-
-  }
+   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login'),
+      appBar: AppBar(title: const Text('Register'),
       ),
       body: FutureBuilder(
         future: Future(() => {
@@ -49,7 +43,7 @@ class _LonginViewState extends State<LonginView> {
                   TextField(
                     controller: _emailcontroller,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Enter your email'
                     ),
                   ),
@@ -57,17 +51,18 @@ class _LonginViewState extends State<LonginView> {
                     controller: _passwordcontroller,
                     obscureText: true,
                     enableSuggestions: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Enter your password'
                     ),
                   ),
                   TextButton(onPressed: () {
-                   login_handler();
-                  }, child: const Text('Login')),
+                    final email = _emailcontroller.text;
+                    final password = _passwordcontroller.text;
+                  }, child: const Text('Register')),
                 ],
            );;
             default:
-              return Text('Loadding....', selectionColor: Colors.red,);
+              return const Text('Loadding....', selectionColor: Colors.red,);
           }
         },
       ),
