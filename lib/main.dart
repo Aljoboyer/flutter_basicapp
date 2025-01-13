@@ -13,13 +13,12 @@ void main() {
       home:  HomePage(),
     ));
 }
-
 class HomePage extends StatelessWidget {
   final LocalStorageService storage = LocalStorageService();
 
   Future<bool> checkUser() async {
     var user_email = await storage.getData('user_email');
-    print('user_email: $user_email');
+    
     return user_email != null && user_email.isNotEmpty;
   }
 
@@ -27,22 +26,46 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<bool>(
-        future: checkUser(), // Call your async function here
+        future: checkUser(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            const Text('Loading...');// Show a loading indicator while waiting
+            // Show a loading indicator while waiting
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             // Handle any errors
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData && snapshot.data == true) {
-            // User is logged in
-            return const Center(child: Text('User Logged In'));
+              Future.microtask(() {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const VerifiedEmailView(),
+                    ),
+                  );
+                });
+            return const SizedBox();
           } else {
-            // User is not logged in
-            return const LonginView();
+            return const LonginView(); // Placeholder widget while navigation occurs
           }
         },
+      ),
+    );
+  }
+}
+
+class VerifiedEmailView extends StatefulWidget {
+  const VerifiedEmailView({super.key});
+
+  @override
+  State<VerifiedEmailView> createState() => _VerifiedEmailViewState();
+}
+
+class _VerifiedEmailViewState extends State<VerifiedEmailView> {
+  @override
+  Widget build(BuildContext context) {
+    return  Scaffold(
+      appBar: AppBar(
+        title: const Text('Welcome'),
+        
       ),
     );
   }
