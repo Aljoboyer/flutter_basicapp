@@ -64,6 +64,9 @@ class _LonginViewState extends State<LonginView> {
                   TextButton(onPressed: () {
                    login_handler();
                   }, child: const Text('Login')),
+                  TextButton(onPressed: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil('/register', (route) => false);
+                  }, child: Text("Not Registered Yet? Register Here!"))
                 ],
            );;
             default:

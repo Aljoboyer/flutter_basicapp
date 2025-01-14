@@ -1,5 +1,7 @@
 import 'package:basic_phase_app/helper/localstorage_fun.dart';
 import 'package:basic_phase_app/screen/login_screen.dart';
+import 'package:basic_phase_app/screen/register_screen.dart';
+import 'package:basic_phase_app/screen/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -7,12 +9,17 @@ void main() {
       title: 'Flutter Demo',
       theme: ThemeData(
         // primarySwatch: Colors.green,
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(249, 255, 255, 255)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(248, 9, 252, 139)),
         useMaterial3: true,
       ),
       home:  HomePage(),
+      routes: {
+        '/login': (context) => LonginView(),
+        '/register': (context) => RegisterView()
+      },
     ));
 }
+
 class HomePage extends StatelessWidget {
   final LocalStorageService storage = LocalStorageService();
 
@@ -35,37 +42,12 @@ class HomePage extends StatelessWidget {
             // Handle any errors
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData && snapshot.data == true) {
-              Future.microtask(() {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const VerifiedEmailView(),
-                    ),
-                  );
-                });
+              Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
             return const SizedBox();
           } else {
             return const LonginView(); // Placeholder widget while navigation occurs
           }
         },
-      ),
-    );
-  }
-}
-
-class VerifiedEmailView extends StatefulWidget {
-  const VerifiedEmailView({super.key});
-
-  @override
-  State<VerifiedEmailView> createState() => _VerifiedEmailViewState();
-}
-
-class _VerifiedEmailViewState extends State<VerifiedEmailView> {
-  @override
-  Widget build(BuildContext context) {
-    return  Scaffold(
-      appBar: AppBar(
-        title: const Text('Welcome'),
-        
       ),
     );
   }
