@@ -43,8 +43,7 @@ class HomePage extends StatelessWidget {
             // Handle any errors
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData && snapshot.data == true) {
-              Navigator.of(context).pushNamedAndRemoveUntil('/notes', (route) => false);
-            return const SizedBox();
+            return const Notes();
           } else {
             return const LonginView(); // Placeholder widget while navigation occurs
           }
