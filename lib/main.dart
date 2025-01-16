@@ -1,7 +1,7 @@
 import 'package:basic_phase_app/helper/localstorage_fun.dart';
 import 'package:basic_phase_app/screen/login_screen.dart';
+import 'package:basic_phase_app/screen/notes_view.dart';
 import 'package:basic_phase_app/screen/register_screen.dart';
-import 'package:basic_phase_app/screen/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,7 +15,8 @@ void main() {
       home:  HomePage(),
       routes: {
         '/login': (context) => LonginView(),
-        '/register': (context) => RegisterView()
+        '/register': (context) => RegisterView(),
+        '/notes': (context) => Notes()
       },
     ));
 }
@@ -42,7 +43,7 @@ class HomePage extends StatelessWidget {
             // Handle any errors
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData && snapshot.data == true) {
-              Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+              Navigator.of(context).pushNamedAndRemoveUntil('/notes', (route) => false);
             return const SizedBox();
           } else {
             return const LonginView(); // Placeholder widget while navigation occurs
