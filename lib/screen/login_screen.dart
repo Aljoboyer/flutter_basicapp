@@ -1,5 +1,6 @@
 import 'package:basic_phase_app/helper/localstorage_fun.dart';
 import 'package:flutter/material.dart';
+import 'package:basic_phase_app/constants/routes.dart';
 
 class LonginView extends StatefulWidget {
   const LonginView({super.key});
@@ -30,7 +31,7 @@ class _LonginViewState extends State<LonginView> {
   void login_handler () async {
     final email = _emailcontroller.text;
     await storage.saveData('user_email', email);
-    Navigator.of(context).pushNamedAndRemoveUntil('/notes', (route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil(notesRoute, (route) => false);
   }
   @override
   Widget build(BuildContext context) {
@@ -65,7 +66,7 @@ class _LonginViewState extends State<LonginView> {
                    login_handler();
                   }, child: const Text('Login')),
                   TextButton(onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil('/register', (route) => false);
+                    Navigator.of(context).pushNamedAndRemoveUntil(registerRoute, (route) => false);
                   }, child: Text("Not Registered Yet? Register Here!"))
                 ],
            );;

@@ -1,3 +1,4 @@
+import 'package:basic_phase_app/constants/routes.dart';
 import 'package:flutter/material.dart';
 
 
@@ -60,7 +61,7 @@ class _RegisterViewState extends State<RegisterView> {
                     final password = _passwordcontroller.text;
                   }, child: const Text('Register')),
                    TextButton(onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+                    Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
                   }, child: Text("Already have an account? Login Here!"))
                 ],
            );;

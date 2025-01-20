@@ -3,6 +3,7 @@ import 'package:basic_phase_app/screen/login_screen.dart';
 import 'package:basic_phase_app/screen/notes_view.dart';
 import 'package:basic_phase_app/screen/register_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:basic_phase_app/constants/routes.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -15,9 +16,9 @@ void main() {
       home:  HomePage(),
       routes: {
         
-        '/login': (context) => LonginView(),
-        '/register': (context) => RegisterView(),
-        '/notes': (context) => Notes()
+        loginRoute: (context) => LonginView(),
+        registerRoute: (context) => RegisterView(),
+        notesRoute: (context) => Notes()
       },
     ));
 }
