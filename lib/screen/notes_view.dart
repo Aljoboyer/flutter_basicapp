@@ -1,3 +1,4 @@
+import 'package:basic_phase_app/helper/localstorage_fun.dart';
 import 'package:flutter/material.dart';
 
 enum ManuAction {logout}
@@ -10,6 +11,15 @@ class Notes extends StatefulWidget {
 }
 
 class _NotesState extends State<Notes> {
+  final storage = LocalStorageService();
+
+  void logout_handler (islogout) async {
+    if(islogout == 'true'){
+      await storage.deleteData('user_email');
+     Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -20,7 +30,7 @@ class _NotesState extends State<Notes> {
             switch (value) {
               case ManuAction.logout:
                 final shouldlogout = await showLogoutModal(context);
-                print(shouldlogout.toString());
+                logout_handler(shouldlogout.toString());
                 break;
               default:
             }

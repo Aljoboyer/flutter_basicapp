@@ -30,7 +30,7 @@ class _LonginViewState extends State<LonginView> {
   void login_handler () async {
     final email = _emailcontroller.text;
     await storage.saveData('user_email', email);
-
+    Navigator.of(context).pushNamedAndRemoveUntil('/notes', (route) => false);
   }
   @override
   Widget build(BuildContext context) {

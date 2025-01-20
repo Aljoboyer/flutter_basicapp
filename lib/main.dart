@@ -14,6 +14,7 @@ void main() {
       ),
       home:  HomePage(),
       routes: {
+        
         '/login': (context) => LonginView(),
         '/register': (context) => RegisterView(),
         '/notes': (context) => Notes()
