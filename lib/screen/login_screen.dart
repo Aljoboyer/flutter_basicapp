@@ -1,4 +1,5 @@
 import 'package:basic_phase_app/helper/localstorage_fun.dart';
+import 'package:basic_phase_app/util/show_error.dart';
 import 'package:flutter/material.dart';
 import 'package:basic_phase_app/constants/routes.dart';
 
@@ -30,8 +31,12 @@ class _LonginViewState extends State<LonginView> {
   
   void login_handler () async {
     final email = _emailcontroller.text;
-    await storage.saveData('user_email', email);
-    Navigator.of(context).pushNamedAndRemoveUntil(notesRoute, (route) => false);
+    if(email.isNotEmpty){
+      await storage.saveData('user_email', email);
+     Navigator.of(context).pushNamedAndRemoveUntil(notesRoute, (route) => false);
+    }else{
+      await showErrorDialog(context, 'Please Enter Email');
+    }
   }
   @override
   Widget build(BuildContext context) {
