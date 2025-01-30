@@ -3,6 +3,26 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
+class DatabaseAllreadyOpen implements Exception{}
+class UnableToGetDocumentsDirectory implements Exception{}
+
+class NotesService {
+  Database? _db;
+
+  Future<void> open() async{
+    if(_db != null){
+      throw DatabaseAllreadyOpen();
+    }
+    try{
+      final docsPath = await getApplicationCacheDirectory(); 
+      final dbPath = join(docsPath.path, dbName);
+      final db = await (dbPath);
+    } on MissingPlatformDirectoryException{
+      throw UnableToGetDocumentsDirectory();
+    }
+  }
+}
+
 @immutable
 class DatabaseUser {
   final int id;
@@ -20,8 +40,39 @@ class DatabaseUser {
   @override
   bool operator == (covariant DatabaseUser other) => id == other.id;
 
-  
+  @override
+  int get hashCode => id.hashCode;
 }
 
 const idColumn = 'id';
 const emailColumn = 'email';
+
+
+class DatabaseNotes {
+  final int id;
+  final int user_id;
+  final String title;
+  final String desc;
+
+  DatabaseNotes({required this.id, required this.user_id, required this.title, required this.desc});
+  
+  DatabaseNotes.fromRow(Map<String, Object?> map) 
+      : id = map[idColumn] as int, 
+        user_id = map[userIdColumn] as int, title = map[titleColumn] as String, 
+        desc = map[descColumn] as String;
+  @override
+  String toString() => 'Person id = $id, user_id = $user_id, title = $title, desc = $desc';
+
+  @override
+  bool operator == (covariant DatabaseNotes other) => id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
+}
+
+const dbName = 'testing.db';
+const notesTable = 'notes';
+const userTable = 'user';
+const userIdColumn = 'user_id';
+const titleColumn = 'title';
+const descColumn = 'desc';
