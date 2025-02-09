@@ -7,10 +7,88 @@ class DatabaseAllreadyOpen implements Exception{}
 class UnableToGetDocumentsDirectory implements Exception{}
 class DatabaseIsNotOpen implements Exception{}
 class CouldNotDeleteUser implements Exception{}
-
+class UserAlreadyExists implements Exception{}
+class CouldNotFindUser implements Exception{}
+class CouldNotFindNote implements Exception{}
 
 class NotesService {
   Database? _db;
+
+  Future<Iterable<DatabaseNotes>> getAllNotes () async{
+      final db  = _getDatabaseOrThrow();
+
+    final notes = await db.query(notesTable);
+
+    return notes.map((noteRow) => DatabaseNotes.fromRow(noteRow));
+  }
+
+  Future<DatabaseNotes> getNote({required int id}) async {
+    final db  = _getDatabaseOrThrow();
+
+    final notes = await db.query(notesTable, limit: 1, where: 'id = ?', whereArgs: [id]);
+
+    if(notes.isEmpty){
+      throw CouldNotFindNote();
+    }
+    else{
+      return DatabaseNotes.fromRow(notes.first);
+    }
+  }
+
+  Future<DatabaseNotes> createNotes ({required DatabaseUser owner}) async {
+    final db = _getDatabaseOrThrow();
+
+    final dbUser = await getUser(email: owner.email);
+
+    if(dbUser != owner){
+      throw CouldNotFindUser();
+    }
+
+    const text = '';
+    const desce = '';
+
+    final noteId = await db.insert(notesTable, {
+      userIdColumn: owner.id,
+      titleColumn: text,
+      descColumn: desce,
+
+    });
+
+    final note = DatabaseNotes(id: noteId, user_id: owner.id, title: text, desc: desce);
+
+    return note;
+
+  }
+  
+  Future<DatabaseUser> getUser({required String email}) async {
+      final db = _getDatabaseOrThrow();
+
+      final result = await db.query(userTable, limit: 1, where: 'email = ?', whereArgs: [email.toLowerCase()]);
+
+      if(result.isEmpty){
+        throw CouldNotFindUser();
+      }
+      else{
+        return DatabaseUser.fromRow(result.first);
+      }
+  }
+
+  Future<DatabaseUser> createUser({required String email}) async {
+      final db = _getDatabaseOrThrow();
+
+      final result = await db.query(userTable, limit: 1, where: 'email = ?', whereArgs: [email.toLowerCase()]);
+
+      if(result.isNotEmpty){
+        throw UserAlreadyExists();
+      }
+
+      final userId = await db.insert(userTable, {
+        emailColumn: email.toLowerCase(),
+      });
+
+      return DatabaseUser(id: userId, email: email);
+
+  }
 
   Future<void> deleteUser({required String email}) async {
     final db = _getDatabaseOrThrow();
