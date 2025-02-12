@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -13,6 +15,17 @@ class CouldNotFindNote implements Exception{}
 
 class NotesService {
   Database? _db;
+
+  List<DatabaseNotes> _notes = [];
+
+  final _noteStreamController = StreamController<List<DatabaseNotes>>.broadcast();
+
+  Future<void> _cacheNotes() async {
+    final allNotes = await getAllNotes();
+
+    _notes = allNotes.toList();
+    _noteStreamController.add(_notes);
+  }
 
   Future<Iterable<DatabaseNotes>> getAllNotes () async{
       final db  = _getDatabaseOrThrow();
@@ -31,7 +44,11 @@ class NotesService {
       throw CouldNotFindNote();
     }
     else{
-      return DatabaseNotes.fromRow(notes.first);
+      final note = DatabaseNotes.fromRow(notes.first);
+      _notes.removeWhere((note) => note.id == id);
+      _notes.add(note);
+      _noteStreamController.add(_notes);
+      return note;
     }
   }
 
@@ -56,6 +73,8 @@ class NotesService {
 
     final note = DatabaseNotes(id: noteId, user_id: owner.id, title: text, desc: desce);
 
+    _notes.add(note);
+    _noteStreamController.add(_notes);
     return note;
 
   }
@@ -152,6 +171,9 @@ class NotesService {
       );''';
 
       await db.execute(createNoteTable);
+      await db.execute(createUserTable);
+
+      await _cacheNotes();
 
     } on MissingPlatformDirectoryException{
       throw UnableToGetDocumentsDirectory();
