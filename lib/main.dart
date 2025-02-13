@@ -1,5 +1,6 @@
 import 'package:basic_phase_app/helper/localstorage_fun.dart';
 import 'package:basic_phase_app/screen/login_screen.dart';
+import 'package:basic_phase_app/screen/new_note_view.dart';
 import 'package:basic_phase_app/screen/notes_view.dart';
 import 'package:basic_phase_app/screen/register_screen.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,8 @@ void main() {
         
         loginRoute: (context) => LonginView(),
         registerRoute: (context) => RegisterView(),
-        notesRoute: (context) => Notes()
+        notesRoute: (context) => Notes(),
+        newNotesRoute: (context) => NewNoteView()
       },
     ));
 }

@@ -1,4 +1,6 @@
+import 'package:basic_phase_app/constants/routes.dart';
 import 'package:basic_phase_app/helper/localstorage_fun.dart';
+import 'package:basic_phase_app/services/note/notes_service.dart';
 import 'package:flutter/material.dart';
 
 enum ManuAction {logout}
@@ -12,6 +14,7 @@ class Notes extends StatefulWidget {
 
 class _NotesState extends State<Notes> {
   final storage = LocalStorageService();
+  late final NotesService _notesService;
 
   void logout_handler (islogout) async {
     if(islogout == 'true'){
@@ -21,11 +24,26 @@ class _NotesState extends State<Notes> {
   }
 
   @override
+  void initState(){
+    final _notesService = NotesService();
+    super.initState();
+  }
+
+  @override
+  void dispose(){
+    _notesService.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
         title: const Text('Notes'),
         actions: [
+          IconButton(onPressed: () {
+            Navigator.of(context).pushNamedAndRemoveUntil(newNotesRoute, (route) => false,);
+          }, icon: Icon(Icons.add)),
           PopupMenuButton<ManuAction>(onSelected: (value) async {
             switch (value) {
               case ManuAction.logout:
@@ -41,7 +59,9 @@ class _NotesState extends State<Notes> {
           },)
         ],
       ),
-      body: Text('Notes'),
+      body: SizedBox(
+        
+      )
     );
   }
 }

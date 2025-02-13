@@ -18,6 +18,10 @@ class NotesService {
 
   List<DatabaseNotes> _notes = [];
 
+  static final NotesService _shared = NotesService._sharedInstance();
+  NotesService._sharedInstance();
+  factory NotesService() => _shared;
+
   final _noteStreamController = StreamController<List<DatabaseNotes>>.broadcast();
 
   Future<void> _cacheNotes() async {
